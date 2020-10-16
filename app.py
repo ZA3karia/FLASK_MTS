@@ -19,3 +19,5 @@ appbuilder = AppBuilder(app, db.session)
 # Run the development server
 app.run(debug=True)
 
+print("narjiss")
+
