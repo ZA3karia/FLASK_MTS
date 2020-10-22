@@ -1,0 +1,54 @@
+
+
+ {% extends "appbuilder/base.html" %}
+
+ {% block content %}
+     
+<h1>Créer un nouveau compte </h1>
+
+<div class="form-row align-items-center">
+  <div class="col-auto my-1">
+    <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
+    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+      <option selected>Choose...</option>
+      <option value="1">Utilisateur</option>
+      <option value="2">Client</option>
+     
+    </select>
+  </div>
+
+ <form>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Nom</label>
+      <input type="email" class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">Prénom</label>
+      <input type="password" class="form-control" id="inputPassword4">
+    </div>
+  </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputEmail4">Email</label>
+        <input type="email" class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputPassword4">Mot de passe automatique</label>
+        <input type="password" class="form-control" id="inputPassword4">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputAddress">Adresse</label>
+      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    </div>
+
+   
+    
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+  </form>
+ 
+ {% endblock %}
+ 
+ 
+
