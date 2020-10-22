@@ -50,15 +50,55 @@ class MyView(BaseView):
 
     ##########          FONCTIONNALITÉS         ############
 
-    @expose('/method2/<string:param1>')
+    @expose('/fonct/<string:param1>')
     @has_access
-    def method2(self, param1):
+    def fonct(self, param1):
         # do something with param1
         # and render template with param
         param1 = 'Goodbye %s' % (param1)
         self.update_redirect()
         return self.render_template('fonctionnalités.html',
                             param1 = param1)
+
+
+    ##########          CREER UN COMPTE         ############
+    @expose('/creercompte/<string:param1>')
+    @has_access
+    def method4(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = 'Goodbye %s' % (param1)
+        self.update_redirect()
+        return self.render_template('creercompte.html',
+                            param1 = param1)
+
+
+
+    ##########          SUPPRIMER UN UTILISATEUR        ############
+    @expose('/supp/<string:param1>')
+    @has_access
+    def supp(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = 'Goodbye %s' % (param1)
+        self.update_redirect()
+        return self.render_template('supprimeruser.html',
+                            param1 = param1)                           
+
+ ##########          CREER  CLIENT       ############
+
+    @expose('/client/<string:param1>')
+    @has_access
+    def client(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = 'Goodbye %s' % (param1)
+        self.update_redirect()
+        return self.render_template('client.html',
+                            param1 = param1)                           
+
+
+
 
 
     @expose('/method100/<string:param1>')
@@ -73,28 +113,19 @@ class MyView(BaseView):
 
 
 
-    ##########          CREER UN COMPTE         ############
-    @expose('/creercompte/<string:param1>')
-    @has_access
-    def method4(self, param1):
-        # do something with param1
-        # and render template with param
-        param1 = 'Goodbye %s' % (param1)
-        self.update_redirect()
-        return self.render_template('creercompte.html',
-                            param1 = param1)
 ########################          ESPACE UTILISATEUR         ############################
 
     ##########          ACCUEIL UTILISATEUR        ############
     view = 'utilisateur'
-    @expose('/index/')
+    
+    @expose('/editpw/')
     @has_access
-    def index(self):
+    def editpw(self):
         # do something with param1
         # and return to previous page or index
         
         self.update_redirect()
-        return self.render_template('login.html')
+        return self.render_template('editpw.html')
 
     ##########          LOGIN UTILISATEUR        ############
 
@@ -113,15 +144,17 @@ class MyView(BaseView):
 ########################          ESPACE ADMIN          ############################
 #accueil admin tableau de bord
 appbuilder.add_view(MyView, "Accueil Admin", category='Espace Admin')
-
-appbuilder.add_link("Method2", href='/myview/method2/john', category='Espace Admin')
-appbuilder.add_link("Fonctionnalités", href='/myview/Fonctionnalités/john', category='Espace Admin')
-appbuilder.add_link("login form", href='/myview/method100/john', category='Espace Admin')
+appbuilder.add_link("Fonctionnalités", href='/myview/fonct/john', category='Espace Admin')
 appbuilder.add_link("Créer un compte", href='/myview/creercompte/john', category='Espace Admin')
+appbuilder.add_link("Supprimer un utilisateur", href='/myview/supp/john', category='Espace Admin')
+appbuilder.add_link("Clients", href='/myview/client/john', category='Espace Admin')
+appbuilder.add_link("Method2", href='/myview/method2/john', category='Espace Admin')
+appbuilder.add_link("login form", href='/myview/method100/john', category='Espace Admin')
+
 
 ########################          ESPACE UTILISATEUR          ############################
 
-appbuilder.add_link("index", href='/myview/index/john', category='Espace utilisateur')
+appbuilder.add_link("Modifier le mot de passe", href='/myview/editpw/john', category='Espace utilisateur')
 
 ########################          ESPACE CLIENT          ############################
 
