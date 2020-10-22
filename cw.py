@@ -2,6 +2,8 @@ from IPython.display import display
 import numpy as np
 import pandas as pd
 
+
+
 import haversine as hs
 from haversine import Unit
 #To calculate distance in meters 
@@ -32,7 +34,14 @@ class Input():
         print("commande id:",self.id,"from:",self.origin,self.origin_lat, self.origin_lon, "  to:", self.to, self.to_lat, self.to_lon)
     def getname(self):
         return self.to
-
+    def getcoords(self):
+        return (self.to_lat, self.to_lon)
+    def showinfo(self,X):
+        print(self.to, self.to_lat, self.to_lon)
+        if X == 0:
+            pass
+        else:
+            print("distance :",hs.haversine(self.getcoords(),X.getcoords(),unit=Unit.METERS)," m")
 
 def node_dis(n1,n2):
     a, b = (n1.lat, n1.lon) if n1.is_origin() else (n1.to_lat ,n1.to_lon)
@@ -51,6 +60,14 @@ class Entropot():
         print("entropot id:",self.id, "at :", self.lat, self.lon)
     def getname(self):
         return self.id
+    def showinfo(self,X):
+        print(self.id, self.lat, self.lon)
+        if X == 0:
+            pass
+        else:
+            print("distance :",hs.haversine(self.getcoords(),X.getcoords(),unit=Unit.METERS)," m")
+    def getcoords(self):
+        return (self.lat, self.lon)
 
 
 def check_1_valid(e1,v1,v2):
@@ -205,11 +222,11 @@ class Distance_matrice():
         print("total saving = ", self.total_saving)
             
 
-Test = False            
-if Test:
-    my_input = Distance_matrice(INPUT)
-    my_input.preprocess()
-    my_input.count_saving()
-    my_input.sort()[0][0]
-    #a[0].getname()
-    output = my_input.optimise(show=True)
+#Test = False            
+#if Test:
+#    my_input = Distance_matrice(INPUT)
+#    my_input.preprocess()
+#    my_input.count_saving()
+#    my_input.sort()[0][0]
+#    #a[0].getname()
+#    output = my_input.optimise(show=True)
