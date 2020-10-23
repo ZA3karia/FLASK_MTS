@@ -1,4 +1,13 @@
 {% extends "appbuilder/base.html" %}
 {% block content %}
-    <h1>{{param1}}</h1>
+<form method="POST">
+    <input name="text">
+    <input type="submit">
+</form>
+    <h1>The optimal route is</h1>
+    {% for node in param1 %}
+      <p>{{ node }} </p>
+    {% endfor %}
+    
+    
 {% endblock %}
