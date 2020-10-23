@@ -17,11 +17,14 @@ from flask_appbuilder.forms import DynamicForm
 
 # init Flask
 app = Flask(__name__)
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> eec669e4e2cffe2c972e4a116ee18a0eeb4ca033
 # Basic config with security for forms and session cookie
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
@@ -35,6 +38,7 @@ db = SQLA(app)
 appbuilder = AppBuilder(app, db.session)
 
 
+<<<<<<< HEAD
 #TEST
 Test = True
 # @app.route('//M_optimiser', methods=['POST'])
@@ -122,6 +126,7 @@ appbuilder.add_view(MyFormView, "My form View", label=lgt('My form View'),
 #appbuilder.add_link("My Forms", category='My View')
 
 
+=======
+>>>>>>> eec669e4e2cffe2c972e4a116ee18a0eeb4ca033
 # Run the development server
 app.run(debug=True)
-
