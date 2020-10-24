@@ -2,7 +2,13 @@
  {% extends "appbuilder/base.html" %}
 
  {% block content %}
- <button type="button" class="btn btn-primary">Ajouter un nouveau client</button>
+ <div class="form-group">
+  <label for="inputAddress"></label>
+  <input type="text" class="form-control" id="inputAddress" placeholder="Client par nom ou numéro de téléphone"><td><button type="button" class="btn btn-success">Rechercher</button></td>
+</div>
+
+<a href="CRclient.html"><button type="button" class="btn btn-primary">Ouvrir un compte client</button></a>
+ </a>
  <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -16,37 +22,37 @@
         <th scope="row">Narjiss</th>
         <td>Sallahi</td>
         <td>exemple</td>
-        <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+        <td><button type="button" class="btn btn-danger">Supprimer</button></td><td><button type="button" class="btn btn-info">Modifier</button></td>
       </tr>
       <tr>
         <th scope="row">Fadoua</th>
         <td>Taibi</td>
         <td>exemple</td>
-        <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+        <td><button type="button" class="btn btn-danger">Supprimer</button></td><td><button type="button" class="btn btn-info">Modifier</button></td>
       </tr>
       <tr>
         <th scope="row">Zakaria</th>
         <td>Zaza</td>
         <td>exemple</td>
-        <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+        <td><button type="button" class="btn btn-danger">Supprimer</button></td><td><button type="button" class="btn btn-info">Modifier</button></td>
       </tr>
       <tr>
         <th scope="row">Noamane</th>
         <td>El Affane</td>
         <td>exemple</td>
-        <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+        <td><button type="button" class="btn btn-danger">Supprimer</button></td><td><button type="button" class="btn btn-info">Modifier</button></td>
       </tr>
       <tr>
         <th scope="row">Basma</th>
         <td>Ncir</td>
         <td>exemple</td>
-        <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+        <td><button type="button" class="btn btn-danger">Supprimer</button></td><td><button type="button" class="btn btn-info">Modifier</button></td>
       </tr>
       <tr>
         <th scope="row">Youness</th>
         <td>Mellouki</td>
         <td>exemple</td>
-        <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+        <td><button type="button" class="btn btn-danger">Supprimer</button></td><td><button type="button" class="btn btn-info">Modifier</button></td>
       </tr>
 
     </tbody>
