@@ -212,8 +212,8 @@ class Distance_matrice():
         self.route = list
         self.total_saving = total_saving
         if show:
-            self.display_route()
-        #print("\n \nThe final list is:",list,"\t with total savings =", total_saving) 
+            print(self.display_route())
+            print("\n \nThe final list is:",list,"\t with total savings =", total_saving) 
         return self.route
     def display_route(self):
         output = []
@@ -224,7 +224,15 @@ class Distance_matrice():
         #print("total saving = ", self.total_saving)
         #output += self.total_saving
         return output   
-
+    def get_route_coords(self):
+        output = []
+        #print("the route is:")
+        for N in self.route:
+            output.append(N.getcoords())
+            #print(N.getname())
+        #print("total saving = ", self.total_saving)
+        #output += self.total_saving
+        return output   
 #Test = False            
 #if Test:
 #    my_input = Distance_matrice(INPUT)
