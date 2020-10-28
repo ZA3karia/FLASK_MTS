@@ -12,6 +12,8 @@ from flask_appbuilder.forms import DynamicForm
 import haversine as hs                      #these two import are only necessery during the test, later they will be uneccesery 
 from haversine import Unit
 from algo import cw, vns
+
+from flask_ngrok import run_with_ngrok
 # import map
 Test = True
 coords = []
@@ -35,6 +37,7 @@ class MyForm(DynamicForm):
 # init Flask
 app = Flask(__name__)
 Bootstrap(app)
+run_with_ngrok(app)  # Start ngrok when app is run
 def index():
     return render_template('login.html')
 # Basic config with security for forms and session cookie
@@ -381,4 +384,4 @@ def render_map():
     return render_template('map.html')
 
 # Run the development server
-app.run(debug=True)
+app.run()
