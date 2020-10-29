@@ -17,8 +17,8 @@ class VNS_Optimizer:
         self.neighbourhood_size=neighbourhood_size
         self.iterations=iterations
         
-        data = pd.read_csv(dataset_coordinates, sep = '\t')
-        data = data.values
+        # data = pd.read_csv(dataset_coordinates, sep = '\t')
+        data = dataset_coordinates
         names=[i[0] for i in data]
         Y = np.asarray([[i[1], i[2]] for i in data])
 
@@ -31,11 +31,15 @@ class VNS_Optimizer:
         # Call the Function
         optimum_temp = self.variable_neighborhood_search(X, seed, self.max_attempts, self.neighbourhood_size, self.iterations)
         self.optimum = optimum_temp[0][optimum_temp[0].index(1):] + optimum_temp[0][:optimum_temp[0].index(1)]+[1]
+        self.best_coords = [Y[i-1] for i in self.optimum]
         self.optimum = [names[i-1] for i in self.optimum]
+        
         self.optimum_dist = optimum_temp[1]
         # print("The best solution is: ", self.optimum, "\nWith a total distance of: ",self.optimum_dist)
     def get_otp(self):
         return self.optimum
+    def get_otp_coords(self):
+        return self.best_coords
     # Total distance of a tour
     def distance_calc(self, Xdata, city_tour):
         distance = 0
