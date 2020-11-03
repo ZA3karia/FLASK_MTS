@@ -14,30 +14,39 @@ from haversine import Unit
 from algo import cw, vns
 
 from flask_ngrok import run_with_ngrok
-# import map
+
+
+##### global variables for test here
 Test = True
 coords = []
 nodes = []
+algoo = "vns"
+ngrok_ = False
+
+
+
+
 if Test:
     fake_data = "clt1_rabat Latitude: 34.0128 Longitude: -6.8314    clt2_rabat Latitude: 34.0623 Longitude: -6.7889   clt3_rabat Latitude: 33.9371 Longitude: -6.9028   clt4_rabat Latitude: 33.9354 Longitude: -6.8081   clt5_casa Latitude: 33.5998 Longitude: -7.6321   clt7_casa Latitude: 33.6060 Longitude: -7.5620   clt8_casa Latitude: 33.5872 Longitude: -7.5229   clt9_casa Latitude: 33.5500 Longitude: -7.6891   clt10_casa Latitude: 33.5368 Longitude: -7.6829   clt11_casa Latitude: 33.5895 Longitude: -7.6128   clt12_fez Latitude: 34.0041 Longitude: -5.0350   clt13_fez Latitude: 34.0561 Longitude: -5.0455   clt14_mkech Latitude: 31.6680 Longitude: -8.0228   clt15_mkech Latitude: 31.6516 Longitude: -8.0653   clt16_mkech Latitude: 31.6183 Longitude: -8.0653   clt17_tanger Latitude: 35.7799 Longitude: -5.8059   clt18_tanger Latitude: 35.7613 Longitude: -5.7817   clt19_tanger Latitude: 35.7414 Longitude: -5.7948   clt20_tetouan Latitude: 35.5677 Longitude: -5.4097"
     A = fake_data.split()
     Entropot = ('INPT',33.9794, -6.8673)
     Client=  [ (A[5*i],float(A[5*i+2]),float(A[5*i+4]) ) for i in range(19)]
-    Client
+    # Client
     INPUT = [(i+1, Entropot[0], Client[i][0],Entropot[1],Entropot[2],Client[i][1],Client[i][2], hs.haversine((Entropot[1],Entropot[2]),(Client[i][1],Client[i][2]),unit=Unit.METERS) ) for i in range(19)]
     
 
-class MyForm(DynamicForm):
-    field1 = StringField(('Field1'),
-        description=('Your field number one!'),
-        validators = [DataRequired()], widget=BS3TextFieldWidget())
-    field2 = StringField(('Field2'),
-        description=('Your field number two!'), widget=BS3TextFieldWidget())
+#class MyForm(DynamicForm):
+ #   field1 = StringField(('Field1'),
+  #      description=('Your field number one!'),
+   #     validators = [DataRequired()], widget=BS3TextFieldWidget())
+    #field2 = StringField(('Field2'),
+     #   description=('Your field number two!'), widget=BS3TextFieldWidget())
 
 # init Flask
 app = Flask(__name__)
 Bootstrap(app)
-run_with_ngrok(app)  # Start ngrok when app is run
+if ngrok_:
+    run_with_ngrok(app)  # Start ngrok when app is run
 def index():
     return render_template('login.html')
 # Basic config with security for forms and session cookie
@@ -52,6 +61,30 @@ db = SQLA(app)
 appbuilder = AppBuilder(app, db.session)
 
 
+from flask import g, url_for, redirect
+from flask_appbuilder import IndexView
+
+class MyIndexView(IndexView):
+
+    @expose('/')
+    def index(self):
+        user = g.user
+
+        if user.is_anonymous:
+            return redirect(url_for('AuthDBView.login'))
+        else:
+            if user.first_name == 'John':
+                return redirect(url_for('HomeView.user'))
+            else:
+                return redirect(url_for('HomeView.general'))
+
+
+
+
+
+
+
+
 
 #creating the views
 class MyView(BaseView):
@@ -59,6 +92,7 @@ class MyView(BaseView):
     default_view = 'AccueilAdmin'
 
     ##########          TABLEAU DE BORD         ############
+
     @expose('/AccueilAdmin/')
     @has_access
     def AccueilAdmin(self):
@@ -67,6 +101,31 @@ class MyView(BaseView):
         
         self.update_redirect()
         return self.render_template('tableaudebord.html')
+
+
+ ##   @expose('/Tableaudebord/<string:param1>')
+   ## @has_access
+    ##def Tableaudebord(self, param1):
+        # do something with param1
+        # and render template with param
+      ##  param1 = 'Goodbye %s' % (param1)
+        ##self.update_redirect()
+        ##return self.render_template('tableaudebord.html',
+          ##                  param1 = param1)
+
+    ##########          ENREGISTREMENT RÉUSSI  ADMIN       ############
+
+    @expose('/EnregReussi/<string:param1>')
+    @has_access
+    def EnregReussi(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = 'Goodbye %s' % (param1)
+        self.update_redirect()
+        return self.render_template('Enregistrementreussi.html',
+                            param1 = param1)
+
+
 
 
     ##########          PREMIERE CONNEXION ADMIN       ############
@@ -217,14 +276,14 @@ class MyView(BaseView):
 
 ##################################          ESPACE CLIENT       ############################################################
 
-    @expose('/method100/<string:param1>')
+    @expose('/CRclient/<string:param1>')
     @has_access
-    def method100(self, param1):
+    def CRclient(self, param1):
         # do something with param1
         # and render template with param
         param1 = 'Goodbye %s' % (param1)
         self.update_redirect()
-        return self.render_template('editpw.html',
+        return self.render_template('CRclient.html',
                             param1 = param1)
 
 
@@ -260,16 +319,22 @@ class MyView(BaseView):
     @has_access
     def OptimisationTrajet(self, param1):
         if Test:
-            my_input = cw.Distance_matrice(INPUT)
-            my_input.preprocess()
-            my_input.count_saving()
-            my_input.sort()[0][0]
-            my_input.optimise()
-            nodes.append(my_input.display_route())
-            param1 = nodes[0]
-            coords.append(my_input.get_route_coords())
-
+            if algoo=="cw":
+                my_input = cw.Distance_matrice(INPUT)
+                my_input.preprocess()
+                my_input.count_saving()
+                my_input.sort()
+                my_input.optimise()
+                nodes.append(my_input.display_route())
+                param1 = nodes[0]
+                coords.append(my_input.get_route_coords())
+            elif algoo=="vns":
+                INPUT_vns = Client
+                INPUT_vns.insert(0,Entropot)
+                coords.append(vns.VNS_Optimizer(INPUT_vns,25,5,150).get_otp_coords())
             render_map()
+        else :
+            param1 = 'Goodbye %s' % (param1)
         self.update_redirect()
         return self.render_template('OptimisationTrajet.html',
                             param1 = param1)
@@ -295,6 +360,33 @@ class MyView(BaseView):
         self.update_redirect()
         return self.render_template('exped.html',
                             param1 = param1)
+
+    ##########          ENREGISTREMENT REUSSI DU CLIENT      ############
+
+    @expose('/Clientreussi/<string:param1>')
+    @has_access
+    def Clientreussi(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = 'Goodbye %s' % (param1)
+        self.update_redirect()
+        return self.render_template('Clientreussi.html',
+                            param1 = param1)
+
+
+
+     ##########          ENREGISTREMENT RÉUSSI UTILISATEUR      ############
+
+    @expose('/Enreg_user/<string:param1>')
+    @has_access
+    def Enreg_user(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = 'Goodbye %s' % (param1)
+        self.update_redirect()
+        return self.render_template('enreg_user.html',
+                            param1 = param1)
+                           
 ########################          ESPACE CLIENT        ############################
 
     ##########          SUIVI EXPEDITION        ############
@@ -327,6 +419,7 @@ class MyView(BaseView):
 ########################          ESPACE ADMIN          ############################
 #accueil admin tableau de bord
 appbuilder.add_link("Première connection", href='/myview/FirstConnAdmin/john', category='Espace Admin')
+##appbuilder.add_view("Tableau de bord", href='/myview/Tableaudebord/john', category='Espace Admin')
 appbuilder.add_view(MyView, "Tableau de bord", category='Espace Admin')
 appbuilder.add_link("Utilisateurs", href='/myview/utilisateurs/john', category='Espace Admin')
 appbuilder.add_link("Clients", href='/myview/client/john', category='Espace Admin')
@@ -337,7 +430,7 @@ appbuilder.add_link("Entrepôt", href='/myview/entrepot/john', category='Espace 
 appbuilder.add_link("Opérations De Transportation Internes", href='/myview/EnrOppTrans/john', category='Espace Admin')
 appbuilder.add_link("Commandes Fournisseurs", href='/myview/commF/john', category='Espace Admin')
 appbuilder.add_link("Gestion des mots de passe", href='/myview/demandemdp/john', category='Espace Admin')
-appbuilder.add_link("Modifier le mot de passe", href='/myview/method1000/john', category='Espace Admin')
+##appbuilder.add_link("Modifier le mot de passe", href='/myview/method1000/john', category='Espace Admin')
 appbuilder.add_link("Optimisation des trajets", href='/myview/OptimisationTrajet/john', category='Espace Admin')
 
 
@@ -369,19 +462,22 @@ appbuilder.add_link("Historique des expéditions", href='/myview/histexped/john'
 def render_map():
     m = folium.Map(location=coords[0][0], tiles="OpenStreetMap", zoom_start=6)
     # Ajout d'un marqueur
-    folium.Marker([34.020882, -6.831650],
-                  popup="Rabat",
+    folium.Marker(coords[0][0],
+                  popup="INPT",
                   icon=folium.Icon(color='green')).add_to(m)
 
-    folium.Marker([31.669746,-7.973328],
-                  popup='Marrakech',
-                  icon=folium.Icon(color='Yellow')).add_to(m)
+    # folium.Marker([31.669746,-7.973328],
+    #               popup='Marrakech',
+    #               icon=folium.Icon(color='Yellow')).add_to(m)
     # Ajout d'une ligne à partir de 5 points
     points = coords[0]
-    folium.PolyLine(points, color="blue",popup=nodes[0] , weight=2.5, opacity=0.8).add_to(m)
+    folium.PolyLine(points, color="blue" , weight=2.5, opacity=0.8).add_to(m)
     # return m
     m.save('templates/map.html')
     return render_template('map.html')
 
 # Run the development server
-app.run()
+if ngrok_:
+    app.run()
+else:
+    app.run(debug=True)
