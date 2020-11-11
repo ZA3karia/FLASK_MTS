@@ -23,16 +23,7 @@ BABEL_DEFAULT_LOCALE = "en"
 BABEL_DEFAULT_FOLDER = "translations"
 LANGUAGES = {
     "en": {"flag": "gb", "name": "English"},
-    "pt": {"flag": "pt", "name": "Portuguese"},
-    "pt_BR": {"flag": "br", "name": "Pt Brazil"},
-    "es": {"flag": "es", "name": "Spanish"},
     "fr": {"flag": "fr", "name": "French"},
-    "de": {"flag": "de", "name": "German"},
-    "zh": {"flag": "cn", "name": "Chinese"},
-    "ru": {"flag": "ru", "name": "Russian"},
-    "pl": {"flag": "pl", "name": "Polish"},
-    "el": {"flag": "gr", "name": "Greek"},
-    "ja_JP": {"flag": "jp", "name": "Japanese"},
 }
 
 FAB_API_MAX_PAGE_SIZE = 100
@@ -46,12 +37,12 @@ AUTH_TYPE = 1
 # AUTH_LDAP_SERVER = "ldap://dc.domain.net"
 AUTH_ROLE_ADMIN = "Admin"
 AUTH_ROLE_PUBLIC = "Public"
-APP_NAME = "F.A.B. Example"
-APP_THEME = ""  # default
+APP_NAME = "TMS by INPT"
+# APP_THEME = ""  # default
 # APP_THEME = "cerulean.css"      # COOL
 # APP_THEME = "amelia.css"
 # APP_THEME = "cosmo.css"
-# APP_THEME = "cyborg.css"       # COOL
+# APP_THEME = "cyborg.css"       # COOL # confirmed
 # APP_THEME = "flatly.css"
 # APP_THEME = "journal.css"
 # APP_THEME = "readable.css"
@@ -60,7 +51,7 @@ APP_THEME = ""  # default
 # APP_THEME = "spacelab.css"      # NICE
 # APP_THEME = "united.css"
 # APP_THEME = "darkly.css"
-# APP_THEME = "lumen.css"
+APP_THEME = "lumen.css"             #prefered
 # APP_THEME = "paper.css"
 # APP_THEME = "sandstone.css"
 # APP_THEME = "solar.css"

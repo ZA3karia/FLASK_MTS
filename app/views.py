@@ -29,13 +29,8 @@ class ContactModelView(ModelView):
         (
             "Personal Info",
             {
-                "fields": [
-                    "address",
-                    "birthday",
-                    "personal_phone",
-                    "personal_celphone",
-                ],
-                "expanded": False,
+                "fields": ["address","birthday","personal_phone","personal_celphone",]
+                ,"expanded": False,
             },
         ),
     ]
