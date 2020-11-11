@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 
 mindate = datetime.date(datetime.MINYEAR, 1, 1)
 
-class users(Model):
+class Users(Model):
     id = Column(Integer, primary_key=True)
     username= Column(String(50), unique=True, nullable=False)
     password= Column(String(50), unique=True, nullable=False)
@@ -15,7 +15,7 @@ class users(Model):
     def __repr__(self):
         return self.username
 
-class reset_requests(Model):
+class Reset_requests(Model):
     id = Column(Integer, primary_key=True)
     user=Column(String(50),  ForeignKey("users.username"), nullable=False)
     request_state=Column(String(50), unique=True, nullable=False)
@@ -35,7 +35,7 @@ class Clients(Model):
 
    
     
-class fournisseurs(Model):
+class Fournisseurs(Model):
     id = Column(Integer, primary_key=True)
     full_name = Column(String(50), unique=True, nullable=False)
     adresse=Column(String(50), unique=True, nullable=False)
@@ -51,7 +51,7 @@ class fournisseurs(Model):
 
 
 
-class entrepos(Model):
+class Entrepos(Model):
     id = Column(Integer, primary_key=True)
     adresse=Column(String(50), unique=True, nullable=False)
     email=Column(String(50), unique=True, nullable=False)
@@ -62,7 +62,7 @@ class entrepos(Model):
     def __repr__(self):
         return self.adresse
 
-class expedition_clients(Model):
+class Expedition_clients(Model):
     id = Column(Integer, primary_key=True)
     ent_origine = Column(Integer,  ForeignKey("entrepots.id"), nullable=False)
     client=Column(Integer, ForeignKey("entrepots.id"), nullable=False)
@@ -77,7 +77,7 @@ class expedition_clients(Model):
    
 
 
-class commandes_fournisseurs(Model):
+class Commandes_fournisseurs(Model):
     id = Column(Integer, primary_key=True)
     fournisseur=Column(Integer,  ForeignKey("fournisseurs.id"), nullable=False)
     eny_dest=Column(Integer,  ForeignKey("entrepots.id"), nullable=False)
@@ -90,7 +90,7 @@ class commandes_fournisseurs(Model):
 
     
 
-class operations_internes(Model):
+class Operations_internes(Model):
     id = Column(Integer, primary_key=True)
     ent_origine = Column(Integer,  ForeignKey("entrepots.id"), nullable=False)
     client=Column(Integer, ForeignKey("entrepots.id"), nullable=False)

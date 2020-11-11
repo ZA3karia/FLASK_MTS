@@ -7,42 +7,100 @@ from sqlalchemy.orm import relationship
 mindate = datetime.date(datetime.MINYEAR, 1, 1)
 
 
-class ContactGroup(Model):
+
+### my classes
+class Users(Model):
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True, nullable=False)
+    username= Column(String(50), unique=True, nullable=False)
+    password= Column(String(50),  nullable=False)
+    typee= Column(String(50),  nullable=False)
+    
+    def __repr__(self):
+        return self.username
+
+
+class Reset_requests(Model):
+    id = Column(Integer, primary_key=True)
+    user=Column(String(50),  ForeignKey("users.username"), nullable=False)
+    users = relationship(Users)
+    request_state=Column(String(50),  nullable=False)
+
+
+class Clients(Model):
+    id = Column(Integer, primary_key=True)
+    full_name = Column(String(50), unique=True, nullable=False)
+    adresse=Column(String(50),  nullable=False)
+    email=Column(String(50), unique=True, nullable=False)
+    phone_number=Column(String(50), unique=True, nullable=False)
+    longitude=Column(String(50),  nullable=False)
+    latitude=Column(String(50),  nullable=False)
+    
+    def __repr__(self):
+        return self.full_name
+   
+    
+class Fournisseurs(Model):
+    id = Column(Integer, primary_key=True)
+    full_name = Column(String(50), unique=True, nullable=False)
+    adresse=Column(String(50),  nullable=False)
+    email=Column(String(50), unique=True, nullable=False)
+    phone_number=Column(String(50), unique=True, nullable=False)
+    longitude=Column(String(50), nullable=False)
+    latitude=Column(String(50), nullable=False)
+    
+    def __repr__(self):
+        return self.full_name
+
+
+class Entrepots(Model):
+    id = Column(Integer, primary_key=True)
+    adresse=Column(String(50),  nullable=False)
+    email=Column(String(50), unique=True, nullable=False)
+    longitude=Column(String(50), nullable=False)
+    latitude=Column(String(50),  nullable=False)
+    
 
     def __repr__(self):
-        return self.name
+        return self.adresse
 
 
-class Gender(Model):
+class Expedition_clients(Model):
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True, nullable=False)
-
+    ent_origine = Column(Integer,  ForeignKey("entrepots.id"), nullable=False)
+    entrepots = relationship(Entrepots)
+    client=Column(Integer, ForeignKey("clients.id"), nullable=False)
+    clients = relationship(Clients)
+    delivery_date=Column(Date, nullable=True)
+    Shiping_costs=Column(Integer, nullable=False)
+    order_state=Column(String(50),  nullable=False)
+    
     def __repr__(self):
-        return self.name
+        return self.id
+ 
 
-
-class Contact(Model):
+class Commandes_fournisseurs(Model):
     id = Column(Integer, primary_key=True)
-    name = Column(String(150), unique=True, nullable=False)
-    address = Column(String(564))
-    birthday = Column(Date, nullable=True)
-    personal_phone = Column(String(20))
-    personal_celphone = Column(String(20))
-    contact_group_id = Column(Integer, ForeignKey("contact_group.id"), nullable=False)
-    contact_group = relationship("ContactGroup")
-    gender_id = Column(Integer, ForeignKey("gender.id"), nullable=False)
-    gender = relationship("Gender")
-
+    fournisseur=Column(Integer,  ForeignKey("fournisseurs.id"), nullable=False)
+    fournisseurs = relationship(Fournisseurs )
+    eny_dest=Column(Integer,  ForeignKey("entrepots.id"), nullable=False)
+    entrepots = relationship(Entrepots)
+    shiping_date=Column(Date, nullable=True)
+    Shiping_costs=Column(Integer,  nullable=False)
+    order_state=Column(String(50),  nullable=False)
+    
     def __repr__(self):
-        return self.name
+        return self.id
 
-    def month_year(self):
-        date = self.birthday or mindate
-        return datetime.datetime(date.year, date.month, 1) or mindate
 
-    def year(self):
-        date = self.birthday or mindate
-        return datetime.datetime(date.year, 1, 1)
-
+# class Operations_internes(Model):
+#     id = Column(Integer, primary_key=True)
+#     ent_origine = Column(Integer,  ForeignKey("entrepots1.id"), nullable=False)
+#     entrepots1 = relationship(Entrepots, primaryjoin="Entrepots")
+#     client=Column(Integer, ForeignKey("entrepots2.id"), nullable=False)
+#     entrepots2 = relationship(Entrepots)
+#     delivery_date=Column(Date, nullable=True)
+#     Shiping_costs=Column(Integer, nullable=False)
+#     order_state=Column(String(50), unique=True, nullable=False)
+    
+#     def __repr__(self):
+#         return self.id
