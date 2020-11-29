@@ -1,4 +1,5 @@
 import calendar
+import os 
 
 from flask_appbuilder import ModelView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -7,7 +8,16 @@ from flask_appbuilder.models.sqla.interface import SQLAInterface
 
 from . import appbuilder, db
 from .models import Users , Reset_requests, Clients, Fournisseurs, Entrepots, Expedition_clients, Commandes_fournisseurs#, Operations_internes
+ 
+##Forms
+from wtforms import Form, StringField, FileField
+from wtforms.validators import DataRequired
+from flask_appbuilder.fieldwidgets import BS3TextFieldWidget
+from flask_appbuilder.forms import DynamicForm
 
+from flask import flash, request
+from flask_appbuilder import SimpleFormView
+from flask_babel import lazy_gettext as _
 
 
 ### my stuff
@@ -68,10 +78,56 @@ class Client_Expedition_clientsModelView(ModelView):
     datamodel = SQLAInterface(Expedition_clients)
     related_views = [User_EntrepotsModelView,User_ClientsModelView]
 
+
+## CSV Upload
+
+class MyForm(DynamicForm):
+    field1 = StringField(('Name'),
+        description=('name your entry'),
+        validators = [DataRequired()], widget=BS3TextFieldWidget())
+    
+    csv = FileField(u'csv File') #, [validators.regexp(u'^[^/\\]\.csv$')]
+    
+    
+    # field2 = StringField(('Field2'),
+    #     description=('Your field number two!'), widget=BS3TextFieldWidget())
+    
+    # def validate_image(form, field):
+    #     if field.data:
+    #         field.data = re.sub(r'[^a-z0-9_.-]', '_', field.data)
+
+
+class MyFormView(SimpleFormView):
+    form = MyForm
+    form_title = 'This is my first form view'
+    message = 'My form submitted'
+
+    # def form_get(self, form):
+    #     form.field1.data = 'This was prefilled'
+
+    def form_post(self, form):
+        # post process form
+        # flash(self.message, 'info')
+        upload_path = "uploads/" + str(form.field1.name)
+        if form.csv.data:
+            csv_data = request.files[form.csv.name].read()
+            flash(self.message, 'csv')
+        #     open(os.path.join(upload_path, form.csv.data), 'w').write(csv_data)
+        # obj = decode(form.csv.data)
+        # vns = vns_optimizer(obj, 25,5,100)
+        # render_map()
+
+
+
 #### chart stuff
 
 
 ###initiating the db
+
+
+
+
+
 
 db.create_all()
 
@@ -128,3 +184,11 @@ appbuilder.add_view(
 appbuilder.add_view(
     Client_Expedition_clientsModelView,             "Expedition Clients",       category="Client"
 )
+
+
+##CSV
+appbuilder.add_view(MyFormView, "My form View", icon="fa-group", label=_('My form View'),
+                     category="My Forms", category_icon="fa-cogs")
+
+
+
