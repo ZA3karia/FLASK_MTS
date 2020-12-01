@@ -21,7 +21,7 @@ Test = True
 coords = []
 nodes = []
 algoo = "vns"
-ngrok_ = False
+ngrok_ = True
 
 
 
@@ -35,12 +35,12 @@ if Test:
     INPUT = [(i+1, Entropot[0], Client[i][0],Entropot[1],Entropot[2],Client[i][1],Client[i][2], hs.haversine((Entropot[1],Entropot[2]),(Client[i][1],Client[i][2]),unit=Unit.METERS) ) for i in range(19)]
     
 
-#class MyForm(DynamicForm):
- #   field1 = StringField(('Field1'),
-  #      description=('Your field number one!'),
-   #     validators = [DataRequired()], widget=BS3TextFieldWidget())
-    #field2 = StringField(('Field2'),
-     #   description=('Your field number two!'), widget=BS3TextFieldWidget())
+class MyForm(DynamicForm):
+    field1 = StringField(('Field1'),
+        description=('Your field number one!'),
+        validators = [DataRequired()], widget=BS3TextFieldWidget())
+    field2 = StringField(('Field2'),
+        description=('Your field number two!'), widget=BS3TextFieldWidget())
 
 # init Flask
 app = Flask(__name__)
@@ -61,30 +61,6 @@ db = SQLA(app)
 appbuilder = AppBuilder(app, db.session)
 
 
-from flask import g, url_for, redirect
-from flask_appbuilder import IndexView
-
-class MyIndexView(IndexView):
-
-    @expose('/')
-    def index(self):
-        user = g.user
-
-        if user.is_anonymous:
-            return redirect(url_for('AuthDBView.login'))
-        else:
-            if user.first_name == 'John':
-                return redirect(url_for('HomeView.user'))
-            else:
-                return redirect(url_for('HomeView.general'))
-
-
-
-
-
-
-
-
 
 #creating the views
 class MyView(BaseView):
@@ -92,7 +68,6 @@ class MyView(BaseView):
     default_view = 'AccueilAdmin'
 
     ##########          TABLEAU DE BORD         ############
-
     @expose('/AccueilAdmin/')
     @has_access
     def AccueilAdmin(self):
@@ -101,31 +76,6 @@ class MyView(BaseView):
         
         self.update_redirect()
         return self.render_template('tableaudebord.html')
-
-
- ##   @expose('/Tableaudebord/<string:param1>')
-   ## @has_access
-    ##def Tableaudebord(self, param1):
-        # do something with param1
-        # and render template with param
-      ##  param1 = 'Goodbye %s' % (param1)
-        ##self.update_redirect()
-        ##return self.render_template('tableaudebord.html',
-          ##                  param1 = param1)
-
-    ##########          ENREGISTREMENT RÉUSSI  ADMIN       ############
-
-    @expose('/EnregReussi/<string:param1>')
-    @has_access
-    def EnregReussi(self, param1):
-        # do something with param1
-        # and render template with param
-        param1 = 'Goodbye %s' % (param1)
-        self.update_redirect()
-        return self.render_template('Enregistrementreussi.html',
-                            param1 = param1)
-
-
 
 
     ##########          PREMIERE CONNEXION ADMIN       ############
@@ -276,14 +226,14 @@ class MyView(BaseView):
 
 ##################################          ESPACE CLIENT       ############################################################
 
-    @expose('/CRclient/<string:param1>')
+    @expose('/method100/<string:param1>')
     @has_access
-    def CRclient(self, param1):
+    def method100(self, param1):
         # do something with param1
         # and render template with param
         param1 = 'Goodbye %s' % (param1)
         self.update_redirect()
-        return self.render_template('CRclient.html',
+        return self.render_template('editpw.html',
                             param1 = param1)
 
 
@@ -323,7 +273,7 @@ class MyView(BaseView):
                 my_input = cw.Distance_matrice(INPUT)
                 my_input.preprocess()
                 my_input.count_saving()
-                my_input.sort()
+                my_input.sort()[0][0]
                 my_input.optimise()
                 nodes.append(my_input.display_route())
                 param1 = nodes[0]
@@ -333,8 +283,6 @@ class MyView(BaseView):
                 INPUT_vns.insert(0,Entropot)
                 coords.append(vns.VNS_Optimizer(INPUT_vns,25,5,150).get_otp_coords())
             render_map()
-        else :
-            param1 = 'Goodbye %s' % (param1)
         self.update_redirect()
         return self.render_template('OptimisationTrajet.html',
                             param1 = param1)
@@ -360,33 +308,6 @@ class MyView(BaseView):
         self.update_redirect()
         return self.render_template('exped.html',
                             param1 = param1)
-
-    ##########          ENREGISTREMENT REUSSI DU CLIENT      ############
-
-    @expose('/Clientreussi/<string:param1>')
-    @has_access
-    def Clientreussi(self, param1):
-        # do something with param1
-        # and render template with param
-        param1 = 'Goodbye %s' % (param1)
-        self.update_redirect()
-        return self.render_template('Clientreussi.html',
-                            param1 = param1)
-
-
-
-     ##########          ENREGISTREMENT RÉUSSI UTILISATEUR      ############
-
-    @expose('/Enreg_user/<string:param1>')
-    @has_access
-    def Enreg_user(self, param1):
-        # do something with param1
-        # and render template with param
-        param1 = 'Goodbye %s' % (param1)
-        self.update_redirect()
-        return self.render_template('enreg_user.html',
-                            param1 = param1)
-                           
 ########################          ESPACE CLIENT        ############################
 
     ##########          SUIVI EXPEDITION        ############
@@ -419,7 +340,6 @@ class MyView(BaseView):
 ########################          ESPACE ADMIN          ############################
 #accueil admin tableau de bord
 appbuilder.add_link("Première connection", href='/myview/FirstConnAdmin/john', category='Espace Admin')
-##appbuilder.add_view("Tableau de bord", href='/myview/Tableaudebord/john', category='Espace Admin')
 appbuilder.add_view(MyView, "Tableau de bord", category='Espace Admin')
 appbuilder.add_link("Utilisateurs", href='/myview/utilisateurs/john', category='Espace Admin')
 appbuilder.add_link("Clients", href='/myview/client/john', category='Espace Admin')
@@ -430,7 +350,7 @@ appbuilder.add_link("Entrepôt", href='/myview/entrepot/john', category='Espace 
 appbuilder.add_link("Opérations De Transportation Internes", href='/myview/EnrOppTrans/john', category='Espace Admin')
 appbuilder.add_link("Commandes Fournisseurs", href='/myview/commF/john', category='Espace Admin')
 appbuilder.add_link("Gestion des mots de passe", href='/myview/demandemdp/john', category='Espace Admin')
-##appbuilder.add_link("Modifier le mot de passe", href='/myview/method1000/john', category='Espace Admin')
+appbuilder.add_link("Modifier le mot de passe", href='/myview/method1000/john', category='Espace Admin')
 appbuilder.add_link("Optimisation des trajets", href='/myview/OptimisationTrajet/john', category='Espace Admin')
 
 
@@ -462,8 +382,8 @@ appbuilder.add_link("Historique des expéditions", href='/myview/histexped/john'
 def render_map():
     m = folium.Map(location=coords[0][0], tiles="OpenStreetMap", zoom_start=6)
     # Ajout d'un marqueur
-    folium.Marker(coords[0][0],
-                  popup="INPT",
+    folium.Marker([34.020882, -6.831650],
+                  popup="Rabat",
                   icon=folium.Icon(color='green')).add_to(m)
 
     # folium.Marker([31.669746,-7.973328],
