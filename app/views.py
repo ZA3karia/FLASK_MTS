@@ -21,6 +21,7 @@ from flask_babel import lazy_gettext as _
 
 from . import backend as tms
 
+import folium
 ### my stuff
 
 
@@ -98,7 +99,7 @@ class MyTestView(BaseView):
         return self.render_template('test.html', param1= param1)
 
 
-class MyOptimisationView(BaseView):
+class BaseOptimisationView(BaseView):
 
     default_view = 'optimise'
 
@@ -113,12 +114,35 @@ class MyOptimisationView(BaseView):
             user.set_methode("vns")
         user.run_optimisation()
         user.get_optimisation()
+        user.render_map()
         param1 = str(user.get_optimisation())
         self.update_redirect()
         return self.render_template('optimisation.html' ,param1= param1)
 
+class UserOptimisationView(BaseOptimisationView):
+    pass
+
+class AdminOptimisationView(BaseOptimisationView):
+    pass
+
+
+class MyMapView(BaseView):
+    default_view = 'get_map'
+
+    @expose('/get_map')
+    @has_access
+    def get_map(self):
+        m = user.map
+        m.save('app/templates/map.html')
+        return self.render_template('map.html')
+
+
+    
 
 ## CSV Upload
+
+
+
 
 class MyForm(DynamicForm):
     field1 = StringField(('Name'),
@@ -156,45 +180,7 @@ class MyFormView(SimpleFormView):
 
 
 
-# #### dashboard stuff
-# class MyView(BaseView):
-# ########################          ESPACE ADMIN          ############################
-#     default_view = 'OptimisationTrajet'
-#     @expose('/OptimisationTrajet/<string:param1>')
-#     @has_access
-#     def OptimisationTrajet(self, param1):
-#         if Test:
-#             if algoo=="cw":
-#                 my_input = cw.Distance_matrice(INPUT)
-#                 my_input.preprocess()
-#                 my_input.count_saving()
-#                 my_input.sort()[0][0]
-#                 my_input.optimise()
-#                 nodes.append(my_input.display_route())
-#                 param1 = nodes[0]
-#                 coords.append(my_input.get_route_coords())
-#             elif algoo=="vns":
-#                 INPUT_vns = Client
-#                 INPUT_vns.insert(0,Entropot)
-#                 coords.append(vns.VNS_Optimizer(INPUT_vns,25,5,150).get_otp_coords())
-#             render_map()
-#         self.update_redirect()
-#         return self.render_template('OptimisationTrajet.html',
-#                             param1 = param1)
 
-# class DashView(BaseView):
-# ########################          ESPACE ADMIN          ############################
-#     default_view = 'Dash'
-
-#     ##########          TABLEAU DE BORD         ############
-#     @expose('/Dash/')
-#     @has_access
-#     def AccueilAdmin(self):
-#         # do something with param1
-#         # and return to previous page or index
-        
-#         self.update_redirect()
-#         return self.render_template('dash.html')
 
 
 ###initiating the db
@@ -264,6 +250,9 @@ appbuilder.add_view(MyFormView, "My form View", icon="fa-group", label=_('My for
 
 
 appbuilder.add_view(MyTestView, "test", category="testViews")
-appbuilder.add_view(MyOptimisationView, "optimise", category="testViews")
+appbuilder.add_view(UserOptimisationView, "optimise", category="User")
+appbuilder.add_view(AdminOptimisationView, "optimise", category="admin")
 
+
+appbuilder.add_view(MyMapView, "map", category="testViews" )
 # appbuilder.add_view(DashView, "Tableau de bord", category='Dashboard')
