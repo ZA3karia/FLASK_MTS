@@ -54,14 +54,14 @@ class Fournisseurs(Model):
 
 class Entrepots(Model):
     id = Column(Integer, primary_key=True)
-    adresse=Column(String(50),  nullable=False)
+    adress=Column(String(50),  nullable=False)
     email=Column(String(50), unique=True, nullable=False)
     longitude=Column(String(50), nullable=False)
     latitude=Column(String(50),  nullable=False)
     
 
     def __repr__(self):
-        return self.adresse
+        return self.adress
 
 
 class Expedition_clients(Model):
@@ -70,9 +70,10 @@ class Expedition_clients(Model):
     entrepots = relationship(Entrepots)
     client=Column(Integer, ForeignKey("clients.id"), nullable=False)
     clients = relationship(Clients)
+    quantity = Column(String(50), nullable=True)
     delivery_date=Column(Date, nullable=True)
-    Shiping_costs=Column(Integer, nullable=False)
-    order_state=Column(String(50),  nullable=False)
+    Shipping_costs=Column(Integer, nullable=False)
+    delivery_state=Column(String(50),  nullable=False)
     
     def __repr__(self):
         return self.id
@@ -86,7 +87,7 @@ class Commandes_fournisseurs(Model):
     entrepots = relationship(Entrepots)
     shiping_date=Column(Date, nullable=True)
     Shiping_costs=Column(Integer,  nullable=False)
-    order_state=Column(String(50),  nullable=False)
+    delivery_state=Column(String(50),  nullable=False)
     
     def __repr__(self):
         return self.id
