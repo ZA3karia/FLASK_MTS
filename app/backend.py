@@ -20,8 +20,9 @@ it contains the
 import numpy as np
 import pandas as pd
 from algo import cw, vns
+from io import StringIO     #enable us to run preprocessing on data from the form
 
-from io import StringIO
+import folium
 
 class Tms_User():
     """
@@ -47,7 +48,17 @@ class Tms_User():
         self.mtd = None
         self.data = None
         self.opt = None
+        self.map = None
     
+    def render_map(self, update=True):
+        coords = self.get_optimisation()
+        m = folium.Map(location=coords[0], tiles="OpenStreetMap", zoom_start=6)
+        folium.Marker(coords[0],
+                    popup="Rabat",
+                    icon=folium.Icon(color='green')).add_to(m)
+        points = coords
+        folium.PolyLine(points, color="blue" , weight=2.5, opacity=0.8).add_to(m)
+        self.map = m
     def set_data(self, data, type, separetor = '\t'):
         data_title = self.name + " data"
         mydata = Data(title=data_title)
@@ -107,9 +118,18 @@ class Optimisation():
     def run_vns(self,max_attempts=25, neighbourhood_size=5, iterations=150):
         INPUT_vns = self.data.clients    #input is entropot first with name, attitude and latitude folowed by the rest of the clients
         
-        self.output_coords = vns.VNS_Optimizer(INPUT_vns,25,5,150).get_otp_coords()
+        self.output_coords = vns.VNS_Optimizer(INPUT_vns,max_attempts=max_attempts,
+                                                neighbourhood_size=neighbourhood_size, 
+                                                iterations=iterations).get_otp_coords()
         self.output = "optimisaion done"
 
+    def run_vns_balayer(self,max_attempts=25, neighbourhood_size=5, iterations=150):
+        INPUT_vns = self.data.clients    #input is entropot first with name, attitude and latitude folowed by the rest of the clients
+        
+        self.output_coords = vns.VNS_Optimizer(INPUT_vns,max_attempts=max_attempts,
+                                                neighbourhood_size=neighbourhood_size, 
+                                                iterations=iterations).get_otp_coords()
+        self.output = "optimisaion done"
 class Data():
     def __init__(self,title="no title"):
         self.title = title

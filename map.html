@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_70290855ad7145c583d48df0e37270ac {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_70290855ad7145c583d48df0e37270ac" ></div>
+        
+</body>
+<script>    
+    
+            var map_70290855ad7145c583d48df0e37270ac = L.map(
+                "map_70290855ad7145c583d48df0e37270ac",
+                {
+                    center: [33.9794, -6.8673],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 6,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_77dbaccd4b074d399f972870a9056a03 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_70290855ad7145c583d48df0e37270ac);
+        
+    
+            var marker_40a74a92098e4577aa97c2332ace75e7 = L.marker(
+                [33.9794, -6.8673],
+                {}
+            ).addTo(map_70290855ad7145c583d48df0e37270ac);
+        
+    
+            var icon_e7e24814f09e436da5a91ed9dfe57d17 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_40a74a92098e4577aa97c2332ace75e7.setIcon(icon_e7e24814f09e436da5a91ed9dfe57d17);
+        
+    
+        var popup_8c8c54cfb2774c6fba8a54a2711ef269 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_de6c8184a990450fa2644febc3ac82b4 = $(`<div id="html_de6c8184a990450fa2644febc3ac82b4" style="width: 100.0%; height: 100.0%;">Rabat</div>`)[0];
+            popup_8c8c54cfb2774c6fba8a54a2711ef269.setContent(html_de6c8184a990450fa2644febc3ac82b4);
+        
+
+        marker_40a74a92098e4577aa97c2332ace75e7.bindPopup(popup_8c8c54cfb2774c6fba8a54a2711ef269)
+        ;
+
+        
+    
+    
+            var poly_line_d99d6027c80a40569165dc7434876182 = L.polyline(
+                [[33.9794, -6.8673], [33.9354, -6.8081], [33.9354, -6.8081], [34.0128, -6.8314], [34.0623, -6.7889], [35.7414, -5.7948], [35.7799, -5.8059], [35.7613, -5.7817], [35.5677, -5.4097], [34.0561, -5.0455], [34.0041, -5.035], [31.668, -8.0228], [31.6183, -8.0653], [31.6516, -8.0653], [33.5368, -7.6829], [33.55, -7.6891], [33.5998, -7.6321], [33.5895, -7.6128], [33.606, -7.562], [33.5872, -7.5229], [33.9371, -6.9028], [33.9794, -6.8673]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 2.5}
+            ).addTo(map_70290855ad7145c583d48df0e37270ac);
+        
+</script>
