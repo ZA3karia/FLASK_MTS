@@ -118,8 +118,11 @@ class Optimisation():
     def run_vns(self,max_attempts=25, neighbourhood_size=5, iterations=150):
         INPUT_vns = self.data.clients    #input is entropot first with name, attitude and latitude folowed by the rest of the clients
         
-        self.output_coords = vns.VNS_Optimizer(INPUT_vns,25,5,150).get_otp_coords()
+        self.output_coords = vns.VNS_Optimizer(INPUT_vns,max_attempts=max_attempts,
+                                                neighbourhood_size=neighbourhood_size, 
+                                                iterations=iterations).get_otp_coords()
         self.output = "optimisaion done"
+    def run_vns_balayer(self,max_attempts=25, neighbourhood_size=5, iterations=150)
 
 class Data():
     def __init__(self,title="no title"):
