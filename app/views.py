@@ -96,7 +96,7 @@ class MyTestView(BaseView):
         param1= "test variable" #str(test_variable) # used for debuging
         param1 = str(user.data)
         self.update_redirect()
-        return self.render_template('test.html', param1= param1)
+        return self.render_template('dash.html', param1= param1)
 
 
 class BaseOptimisationView(BaseView):
