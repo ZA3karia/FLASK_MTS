@@ -181,7 +181,7 @@ class VNS_Optimizer:
             print("Camion N",i)
             print("-----------------------------------------------------")
             i+=1
-            tour_for_camion= VNS_Optimizer([names,y],5,2,20)
+            tour_for_camion= VNS_Optimizer([names,y],25,5,100)
             self.camion_tour.append(tour_for_camion)
     
     def get_otp_coords(self):

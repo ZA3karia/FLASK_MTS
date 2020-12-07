@@ -167,12 +167,23 @@ class Balayed_Optimisation():
         self.output = None
         if mtd==1:
             self.run_blayage_type1()
-
+        if mtd==2:
+            self.run_blayage_type2()
         else:
             print("methode not added yet")
     
     def run_blayage_type1(self):
-        output = vb.VNS_Optimizer(self.clients,25,5,100)
+        output = vb.VNS_Optimizer(self.clients,25,5,200)
+        output.set_quantity_pd(self.quantities)
+        output.set_capacity(self.capacity)
+        output.balayage(output.capacity, output.quantity)
+        output.tour_per_camion()
+        self.camions = output.camion_tour
+        self.output = output
+        return self
+
+    def run_blayage_type2(self):
+        output = vb.VNS_Optimizer(self.clients,250,50,1000)
         output.set_quantity_pd(self.quantities)
         output.set_capacity(self.capacity)
         output.balayage(output.capacity, output.quantity)

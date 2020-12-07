@@ -132,8 +132,27 @@ class BaseBalayedOptimisationView(BaseView):
             user.set_data("app\data (1).csv","csv")
         if user.mtd==None:
             mtd = 1
-        user.set_capacity(112)
+        
+        user.set_capacity(200)
         user.run_balayage(1)
+        user.get_optimisation()
+        user.render_map_balay()
+        param1 = str(user.get_optimisation())
+        self.update_redirect()
+        return self.render_template('optimisation.html' ,param1= param1)
+    
+    @expose('/blayed_optimise2/')
+    @has_access
+    def blayed_optimise2(self):
+        # do something with param1
+        # and render template with param
+        if user.data==None:
+            user.set_data("app\data (1).csv","csv")
+        if user.mtd==None:
+            mtd = 2
+        
+        user.set_capacity(50)
+        user.run_balayage(2)
         user.get_optimisation()
         user.render_map_balay()
         param1 = str(user.get_optimisation())
@@ -143,10 +162,10 @@ class BaseBalayedOptimisationView(BaseView):
 
 
 
-class UserOptimisationView(BaseOptimisationView):
+class UserOptimisationView(BaseBalayedOptimisationView):
     pass
 
-class AdminOptimisationView(BaseOptimisationView):
+class AdminOptimisationView(BaseBalayedOptimisationView):
     pass
 
 
@@ -278,11 +297,12 @@ appbuilder.add_view(MyFormView, "My form View", icon="fa-group", label=_('My for
                      category="My Forms", category_icon="fa-cogs")
 
 
-appbuilder.add_view(MyTestView, "test", category="testViews")
+appbuilder.add_view(MyTestView, "test", category="outils")
+
 appbuilder.add_view(UserOptimisationView, "optimise", category="User")
 appbuilder.add_view(AdminOptimisationView, "optimise", category="admin")
 
 
-appbuilder.add_view(MyMapView, "map", category="testViews" )
-appbuilder.add_view(BaseBalayedOptimisationView, "BaseBalayedOptimisationView", category="testViews" )
+appbuilder.add_view(MyMapView, "map", category="outils" )
+# appbuilder.add_view(BaseBalayedOptimisationView, "BaseBalayedOptimisationView", category="testViews" )
 # appbuilder.add_view(DashView, "Tableau de bord", category='Dashboard')
