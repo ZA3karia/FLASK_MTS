@@ -84,9 +84,14 @@ class VNS_Optimizer:
             self.names=[str(i[0]) for i in data]
             self.Y = np.asarray([[i[1], i[2]] for i in data])
         except:
-            data =dataset_coordinates
-            self.names = dataset_coordinates[0]
-            self.Y = np.asarray(dataset_coordinates[1])
+            try:
+                data = dataset_coordinates
+                self.names=[str(i[0]) for i in data]
+                self.Y = np.asarray([[i[1], i[2]] for i in data])
+            except ValueError:
+                data =dataset_coordinates
+                self.names = dataset_coordinates[0]
+                self.Y = np.asarray(dataset_coordinates[1])
         # self.names=[i[0] for i in data]
         # Y = np.asarray([[i[1], i[2]] for i in data])
         
@@ -104,7 +109,9 @@ class VNS_Optimizer:
         # Call the Function
         optimum_temp = self.variable_neighborhood_search(self.X, seed, self.max_attempts, self.neighbourhood_size, self.iterations)
         self.optimum = optimum_temp[0][optimum_temp[0].index(1):] + optimum_temp[0][:optimum_temp[0].index(1)]+[1]
+        self.best_coords = [self.Y[i-1] for i in self.optimum]
         self.optimum = [self.names[i-1] for i in self.optimum]
+        
         self.optimum_dist = optimum_temp[1]
         print("The best solution is: ", self.optimum, "\nWith a total distance of: ",self.optimum_dist)
 
@@ -114,6 +121,10 @@ class VNS_Optimizer:
     def set_quantities_csv(self, dataset_coordinates):
         data = pd.read_csv(dataset_coordinates, sep = ',')
         data = data.values
+        self.quantity = np.asarray([[i[1], i[2]] for i in data])
+        return self.quantity
+    def set_quantity_pd(self, dataframe):
+        data = dataframe
         self.quantity = np.asarray([[i[1], i[2]] for i in data])
         return self.quantity
     def set_capacity(self, capacity):
@@ -135,7 +146,11 @@ class VNS_Optimizer:
         detaills = []   
         for sol in self.optimum[1:-1]:
             #                                                                                                   print("client: ",str(sol),"index: ",self.names.index(str(sol))-2)
-            quan = quantitie[self.names.index(str(sol))-2]
+            print("sol", sol)
+            print("names", self.names)
+            print("quantitie",quantitie)
+            quan = quantitie[self.names.index(str(sol))-2][1]
+            print("quan",quan)
             sum+= float(quan)
             if sum > capacity:
                 camions.append(camion)
@@ -158,6 +173,7 @@ class VNS_Optimizer:
                 i +=1
     
     def tour_per_camion(self):
+        self.camion_tour = []
         i=1
         for camion in self.camions:
             y = [self.Y[self.names.index(client)-1] for client in ["1.0"]+camion]
@@ -165,8 +181,11 @@ class VNS_Optimizer:
             print("Camion N",i)
             print("-----------------------------------------------------")
             i+=1
-            self.camion_tour=VNS_Optimizer([names,y],25,5,100)
-        
+            tour_for_camion= VNS_Optimizer([names,y],25,5,100)
+            self.camion_tour.append(tour_for_camion)
+    
+    def get_otp_coords(self):
+        return self.best_coords
     # Total distance of a tour
     def distance_calc(self, Xdata, city_tour):
         distance = 0

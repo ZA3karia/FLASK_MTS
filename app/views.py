@@ -119,10 +119,53 @@ class BaseOptimisationView(BaseView):
         self.update_redirect()
         return self.render_template('optimisation.html' ,param1= param1)
 
-class UserOptimisationView(BaseOptimisationView):
+
+class BaseBalayedOptimisationView(BaseView):
+    default_view = 'blayed_optimise'
+
+    @expose('/blayed_optimise/')
+    @has_access
+    def blayed_optimise(self):
+        # do something with param1
+        # and render template with param
+        if user.data==None:
+            user.set_data("app\data (1).csv","csv")
+        if user.mtd==None:
+            mtd = 1
+        
+        user.set_capacity(200)
+        user.run_balayage(1)
+        user.get_optimisation()
+        user.render_map_balay()
+        param1 = str(user.get_optimisation())
+        self.update_redirect()
+        return self.render_template('optimisation.html' ,param1= param1)
+    
+    @expose('/blayed_optimise2/')
+    @has_access
+    def blayed_optimise2(self):
+        # do something with param1
+        # and render template with param
+        if user.data==None:
+            user.set_data("app\data (1).csv","csv")
+        if user.mtd==None:
+            mtd = 2
+        
+        user.set_capacity(50)
+        user.run_balayage(2)
+        user.get_optimisation()
+        user.render_map_balay()
+        param1 = str(user.get_optimisation())
+        self.update_redirect()
+        return self.render_template('optimisation.html' ,param1= param1)
+
+
+
+
+class UserOptimisationView(BaseBalayedOptimisationView):
     pass
 
-class AdminOptimisationView(BaseOptimisationView):
+class AdminOptimisationView(BaseBalayedOptimisationView):
     pass
 
 
@@ -149,7 +192,9 @@ class MyForm(DynamicForm):
         description=('name your entry'),
         validators = [DataRequired()], widget=BS3TextFieldWidget())
     
-    csv = FileField(u'csv File') #, [validators.regexp(u'^[^/\\]\.csv$')]
+    csv_client = FileField(u'clients csv') #, [validators.regexp(u'^[^/\\]\.csv$')]
+    
+    csv_expedition = FileField(u'expedition csv') #, [validators.regexp(u'^[^/\\]\.csv$')]
     
     # def validate_image(form, field):
     #     if field.data:
@@ -168,15 +213,18 @@ class MyFormView(SimpleFormView):
         # post process form
         # flash(self.message, 'info')
         # upload_path = "uploads/" + str(form.field1.name)
-        if form.csv.data:
-            csv_data = request.files[form.csv.name].read()
-            flash(self.message, 'csv')
+        if form.csv_client.data:
+            csv_data = request.files[form.csv_client.name].read()
+            flash(self.message, 'csv clients')
             print(csv_data)
-            user.set_data_bytes(csv_data, separetor='\t')
-        #     open(os.path.join(upload_path, form.csv.data), 'w').write(csv_data)
-        # obj = decode(form.csv.data)
-        # vns = vns_optimizer(obj, 25,5,100)
-        # render_map()
+            user.set_data_bytes(csv_data, separetor=',')
+        if form.csv_expedition.data:
+            csv_data2 = request.files[form.csv_expedition.name].read()
+            flash(self.message, 'csv expeditions')
+            print("csv data2 {{{{{{{{{{{{{{{{{")
+            print(csv_data2)
+            user.set_expedition_data(csv_data2, separetor=',')
+        
 
 
 
@@ -249,10 +297,12 @@ appbuilder.add_view(MyFormView, "My form View", icon="fa-group", label=_('My for
                      category="My Forms", category_icon="fa-cogs")
 
 
-appbuilder.add_view(MyTestView, "test", category="testViews")
+appbuilder.add_view(MyTestView, "test", category="outils")
+
 appbuilder.add_view(UserOptimisationView, "optimise", category="User")
 appbuilder.add_view(AdminOptimisationView, "optimise", category="admin")
 
 
-appbuilder.add_view(MyMapView, "map", category="testViews" )
+appbuilder.add_view(MyMapView, "map", category="outils" )
+# appbuilder.add_view(BaseBalayedOptimisationView, "BaseBalayedOptimisationView", category="testViews" )
 # appbuilder.add_view(DashView, "Tableau de bord", category='Dashboard')
